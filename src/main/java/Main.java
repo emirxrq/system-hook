@@ -10,7 +10,7 @@ import lc.kra.system.keyboard.event.GlobalKeyEvent;
 import lc.kra.system.mouse.GlobalMouseHook;
 import lc.kra.system.mouse.event.GlobalMouseAdapter;
 import lc.kra.system.mouse.event.GlobalMouseEvent;
-public class Main implements MouseHook.MouseEventListener  {
+public class Main implements MouseHook.MouseEventListener, KeyboardHook.KeyboardEventListener   {
 
     public static void main(String[] args) throws InterruptedException {
         MouseHook mouseHook = new MouseHook();
@@ -21,6 +21,7 @@ public class Main implements MouseHook.MouseEventListener  {
         keyboardHook.start();
 
         mouseHook.setMouseEventListener(new Main());
+        keyboardHook.setKeyboardEventListener(new Main());
 
         while (true) {
             if (keyboardHook.isKeyPressed(GlobalKeyEvent.VK_ESCAPE)) { 
@@ -56,6 +57,12 @@ public class Main implements MouseHook.MouseEventListener  {
 
         mouseHook.stop();
         keyboardHook.stop();
+    }
+    
+    @Override
+    public void onKeyReleased(int keyCode)
+    {
+    	System.out.println("Klavye tuşu bırakıldı: " + keyCode);
     }
     
     @Override

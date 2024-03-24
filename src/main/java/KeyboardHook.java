@@ -9,6 +9,7 @@ public class KeyboardHook {
     private GlobalKeyboardHook keyboardHook;
     private boolean isRunning = false;
     private Map<Integer, Boolean> keyStates = new HashMap<>();
+    KeyboardEventListener listener;
 
     public KeyboardHook() {
         for (int i = 0x0; i <= 0xff; i++) {
@@ -33,6 +34,11 @@ public class KeyboardHook {
                     int keyCode = event.getVirtualKeyCode();
                     if (keyStates.containsKey(keyCode)) {
                         keyStates.put(keyCode, false);
+                        
+                        if (listener != null)
+                        {
+                        	listener.onKeyReleased(keyCode);
+                        }
                     }
                 }
             });
@@ -54,5 +60,14 @@ public class KeyboardHook {
             return keyStates.get(keyCode);
         }
         return false;
+    }
+    
+    public void setKeyboardEventListener(KeyboardEventListener listener)
+    {
+    	this.listener = listener;
+    }
+    
+    public interface KeyboardEventListener {
+    	public void onKeyReleased(int keyCode);
     }
 }

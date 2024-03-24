@@ -43,7 +43,7 @@ public class MouseHook {
                 }
             });
             isRunning = true;
-            System.out.println("Mouse hook started.");
+            System.out.println("Mouse hook başladı.");
         }
     }
 
@@ -51,7 +51,7 @@ public class MouseHook {
         if (isRunning) {
             mouseHook.shutdownHook();
             isRunning = false;
-            System.out.println("Mouse hook stopped.");
+            System.out.println("Mouse hook durdu.");
         }
     }
 
