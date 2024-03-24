@@ -10,6 +10,7 @@ public class MouseHook {
     private GlobalMouseHook mouseHook;
     private boolean isRunning = false;
     private Map<Integer, Boolean> buttonStates = new HashMap<>();
+    private MouseEventListener listener;
 
     public MouseHook() {
         for (int i = 0x0; i <= 1<<6; i++) {
@@ -34,6 +35,10 @@ public class MouseHook {
                     int button = event.getButton();
                     if (buttonStates.containsKey(button)) {
                         buttonStates.put(button, false);
+                        if (listener != null)
+                        {
+                        	listener.onMouseReleased(button);
+                        }
                     }
                 }
             });
@@ -55,5 +60,14 @@ public class MouseHook {
             return buttonStates.get(button);
         }
         return false;
+    }
+    
+    public void setMouseEventListener(MouseEventListener listener)
+    {
+    	this.listener = listener;
+    }
+    
+    public interface MouseEventListener {
+    	void onMouseReleased(int button);
     }
 }

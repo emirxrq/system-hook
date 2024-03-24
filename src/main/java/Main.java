@@ -10,7 +10,7 @@ import lc.kra.system.keyboard.event.GlobalKeyEvent;
 import lc.kra.system.mouse.GlobalMouseHook;
 import lc.kra.system.mouse.event.GlobalMouseAdapter;
 import lc.kra.system.mouse.event.GlobalMouseEvent;
-public class Main   {
+public class Main implements MouseHook.MouseEventListener  {
 
     public static void main(String[] args) throws InterruptedException {
         MouseHook mouseHook = new MouseHook();
@@ -20,21 +20,22 @@ public class Main   {
         mouseHook.start();
         keyboardHook.start();
 
+        mouseHook.setMouseEventListener(new Main());
 
         while (true) {
             if (keyboardHook.isKeyPressed(GlobalKeyEvent.VK_ESCAPE)) { 
                 break;
             }
 
-            for (int i = 0; i <= 0xff; i++) { // KLAVYE TUŞLARININ KODLARINDA 255'E KADAR
+            for (int i = 0; i <= 0xff; i++) { 
                 if (keyboardHook.isKeyPressed(i)) {
                     System.out.println("Klavyede tıklanan tuşun kodu " + i);
                 }
             }
 
-            for (int i = 0x0; i <= 1<<6; i++) { // MOUSE TUŞLARININ KODLARINDA 64'E KADAR 
+            for (int i = 0x0; i <= 1<<6; i++) { 
                 if (mouseHook.isButtonPressed(i)) {
-                    System.out.println("Mousede tıklanan tuşun kodu " + i);
+                    System.out.println("Farede tıklanan tuşun kodu " + i);
                     if (i == GlobalMouseEvent.BUTTON_X2)
                     {
                     	Robot robot;
@@ -50,10 +51,16 @@ public class Main   {
                 }
             }
             
-            Thread.sleep(150); // SOL TIKI KAÇ MİLİSANİYEDE BİR YAPSIN BURAYA YAZIN
+            Thread.sleep(150); 
         }
 
         mouseHook.stop();
         keyboardHook.stop();
+    }
+    
+    @Override
+    public void onMouseReleased(int button)
+    {
+    	System.out.println("Fare tuşu bırakıldı: " + button);
     }
 }
